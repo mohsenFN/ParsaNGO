@@ -94,6 +94,7 @@ DATABASES = {
         'PASSWORD': DB_PASSWORD,
         'HOST': DB_HOST,  # or the hostname where your MySQL server is running
         'PORT': DB_PORT,      # or the port on which your MySQL server is listening
+        'CONN_HEALTH_CHECKS' : True, # Checks connection health
     }
 }
 
