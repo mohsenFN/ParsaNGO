@@ -2,20 +2,23 @@
 
 # ! Warning You need to set the webhook link for recieving sms in Melli payamak Panel ! #
 
-HOST_LINK_NAME = 'ParsaNGO.org'
+# set 127.0.0.1 for testing the app
+HOST_LINK_NAME = ''
 
-STATIC_ROOT_ = '/app/static'
+# set '/app/static' variable below and use 'collectstatic'
+STATIC_ROOT_ = None
 
-APP_SECRET_KEY = 'p8nx=a5duo$1qi-_azb3g&3_y0@(g!o7abu#mu1@=5ez#oi)-('
+APP_SECRET_KEY = 'S0m3T4ingN0TS3cur3XDXD'
 
 # Start the DB and write the info here !
 # Then migrate
 
 
-DB_NAME = 'tiffiny'
-DB_USERNAME = 'root'
-DB_PASSWORD = 'bxXA5wPpIJ9UXf6s'
-DB_HOST = 'services.irn3.chabokan.net'
-DB_PORT = '61340'
+# We've used MariaDB in our Deployment server
+DB_NAME = 'DB_NAME'
+DB_USERNAME = 'DB_USERNAME'
+DB_PASSWORD = 'DB_PASSWORD'
+DB_HOST = 'DB_HOST'
+DB_PORT = 'DB_PORT'
 
-DEBUG_MODE = False 
+DEBUG_MODE = True
