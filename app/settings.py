@@ -45,7 +45,7 @@ INSTALLED_APPS = [
 
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://parsango.org'
+    f'http://{HOST_LINK_NAME}'
 ]
 
 
