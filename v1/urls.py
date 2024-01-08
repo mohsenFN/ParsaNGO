@@ -5,5 +5,7 @@ from . import views
 urlpatterns = [
     path('', views.index_page, name = 'index'), # path for index page (+ handles colab requests)
     path("handle_sms/", views.handle_sms), # this path hadnles webhooks for sms
-    path('res/', views.testt_handler)
+    path('res/', views.testt_handler),
+    path('excel/numbers', views.export_numbers),
+    path('excel/colabs', views.export_colabs)
 ]
