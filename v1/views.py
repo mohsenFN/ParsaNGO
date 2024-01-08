@@ -1,10 +1,14 @@
-from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django_ratelimit.decorators import ratelimit
+from django.shortcuts import render
+from django.utils import timezone
 
+from v1 import BUSINESS_TEXT as btex
+from v1.models import Colab, Number
 from v1.forms import ColabForm
 from v1 import utils
-from v1 import BUSINESS_TEXT as btex
+
+from openpyxl import Workbook
 
 
 def handle_sms(request):
@@ -26,7 +30,6 @@ def handle_sms(request):
     status_msg = 'ok'
     response = JsonResponse({'status' : status_msg, 'message' : msg}, status=200)
     return response
-
 
 
 
@@ -76,3 +79,58 @@ def custom_404(request, exception):
 @ratelimit(key='ip', rate='5/m')
 def testt_handler(request):
     return render(request, 'reserve.html', {'msg' : btex.wrong_entry_to_res})
+
+
+
+
+def export_colabs(request):
+    # Query the database to get the data
+    numbers_queryset = Colab.objects.all()
+
+    # Create a new workbook and select the active sheet
+    workbook = Workbook()
+    sheet = workbook.active
+
+    # Add headers to the sheet
+    sheet['A1'] = 'Number'
+    sheet['B1'] = 'fullname'
+    sheet['C1'] = 'code_melli'
+
+    # Add data to the sheet
+    for row_num, number in enumerate(numbers_queryset, start=2):
+
+        sheet.cell(row=row_num, column=1, value=number.number)
+        sheet.cell(row=row_num, column=2, value=number.fullname)
+        sheet.cell(row=row_num, column=3, value=number.code_melli)
+
+
+    # Create a response object
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=numbers.xlsx'
+
+    # Save the workbook content to the response
+    workbook.save(response)
+
+    return response
+
+
+
+def export_numbers(request):
+    numbers_queryset = Number.objects.all()
+
+    workbook = Workbook()
+    sheet = workbook.active
+
+    sheet['A1'] = 'Number'
+
+    for row_num, number in enumerate(numbers_queryset, start=2):
+
+        sheet.cell(row=row_num, column=1, value=number.number)
+
+
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=numbers.xlsx'
+
+    workbook.save(response)
+
+    return response
